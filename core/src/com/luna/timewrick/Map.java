@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Map {
-	static int AMOUNT_OF_SOLIDS = 5;
 	static int EMPTY = 0;
 	static int DIRT = 0xffffff;
 	static int GRASS = 0x0000ff;
@@ -19,9 +18,10 @@ public class Map {
 	static int END = 0xff00ff;
 	static int DISPENSER = 0xff0100;
 	static int SPIKES = 0x00ff00;
-	static int MOVING_SPIKES = 0xffff00;
 	static int DOOR = 0xffff00;
+	static float HALFSCREEN = 7.5f;
 
+	float[] roomStart = new float[10], roomEnd = new float[10];
 	static int[] solid = {DIRT, GRASS, WOOD};
 
 	int[][] tiles;
@@ -37,6 +37,8 @@ public class Map {
 	private void loadBinary () {
 		Pixmap pixmap = new Pixmap(Gdx.files.internal("data/levels.png"));
 		tiles = new int[pixmap.getWidth()][pixmap.getHeight()];
+		int room = 1, k = -1;
+		roomStart[1] = HALFSCREEN+1;
 		for (int y = 0; y < pixmap.getHeight(); y++) {
 			for (int x = 0; x < pixmap.getWidth(); x++) {
 				int pix = (pixmap.getPixel(x, y) >>> 8) & 0xffffff;
@@ -47,6 +49,14 @@ public class Map {
 					endDoor = new EndDoor(x, pixmap.getHeight() - 1 - y);
 				}else if (match(pix, DOOR)) {
 					doors.add(new Door(x, pixmap.getHeight() - 1 - y));
+					if(k==1) {
+						roomStart[room] = x+HALFSCREEN+1;
+					}
+					else {
+						roomEnd[room++] = x-HALFSCREEN;
+					}
+					k*=-1;
+					System.out.println("Door: "+x);
 				} else {
 					// TODO: 15.11.15 THIS IS SO SHITTY
 					tiles[x][y] = pix;

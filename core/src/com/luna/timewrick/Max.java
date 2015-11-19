@@ -15,9 +15,10 @@ public class Max {
     static final int SPAWN = 3;
     static final int DYING = 4;
     static final int DEAD = 5;
-
     static final int LEFT = -1;
     static final int RIGHT = 1;
+
+    static final float DOORTIME = 0;//время, необходимое для получения возможности снова пройти через дверь
 
     static final float ACCELERATION = 20f;
     static final float JUMP_VELOCITY = 10.4f;
@@ -30,6 +31,7 @@ public class Max {
     Vector2 vel = new Vector2();
     public Rectangle bounds = new Rectangle();
 
+    float doorTime = DOORTIME;
     int state = SPAWN;
     public int curRoom = 1;
     float stateTime = 0;
@@ -75,7 +77,7 @@ public class Max {
         }
 
         stateTime+=deltaTime;
-
+        doorTime+=deltaTime;
     }
 
     private void processKeys() {
@@ -165,7 +167,25 @@ public class Max {
             state = DYING;
             stateTime = 0;
         }
+        for (int i = 0; i < map.doors.size(); i++) {
+            Door d = map.doors.get(i);
+            if(i%2==0) {
+                if(this.pos.x>=d.bounds.x-0.2f&&this.pos.x<=d.bounds.x+0.2f && this.vel.x>0&&doorTime>DOORTIME) {
+                    curRoom++;
+                    this.bounds.x = map.doors.get(i+1).bounds.x+0.1f;//либо map.roomEnd[curRoom]+1 -Map.HALFSCREEN
+//                    this.pos.x = map.roomStart[curRoom]+1;
+                    doorTime = 0;
+                }
+            } else {
+                if(this.pos.x>=d.bounds.x-0.2f&&this.pos.x<=d.bounds.x+0.2f && this.vel.x<0&&doorTime>DOORTIME) {
+                    curRoom--;
+                    this.bounds.x = map.doors.get(i-1).bounds.x+0.1f; //либо  map.roomEnd[curRoom]-1 +Map.HALFSCREEN
 
+//                    this.pos.x = map.roomEnd[curRoom]-1;
+                    doorTime = 0;
+                }
+            }
+        }
         if (Map.isSolid(tile1))
             r[0].set(p1x, p1y, 1, 1);
         else
@@ -178,7 +198,7 @@ public class Max {
             r[2].set(p3x, p3y, 1, 1);
         else
             r[2].set(-1, -1, 0, 0);
-        if (Map.isSolid(tile4)) // TODO: 17.11.15 сделать проверку в массиве твердых объектов тип Map.GRASS, Map.DIRT, Map.STONE и т.д.
+        if (Map.isSolid(tile4)) 
             r[3].set(p4x, p4y, 1, 1);
         else
             r[3].set(-1, -1, 0, 0);
