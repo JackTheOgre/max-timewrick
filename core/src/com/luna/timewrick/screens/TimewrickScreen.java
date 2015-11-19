@@ -1,13 +1,13 @@
 
-package com.badlogic.cubocy.screens;
+package com.luna.timewrick.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 
-public abstract class CubocScreen implements Screen {
+public abstract class TimewrickScreen implements Screen {
 	Game game;
 
-	public CubocScreen (Game game) {
+	public TimewrickScreen(Game game) {
 		this.game = game;
 	}
 

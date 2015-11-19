@@ -1,17 +1,18 @@
 
-package com.badlogic.cubocy.screens;
+package com.luna.timewrick.screens;
 
-import com.badlogic.cubocy.Map;
-import com.badlogic.cubocy.MapRenderer;
-import com.badlogic.cubocy.OnscreenControlRenderer;
+import com.luna.timewrick.MapRenderer;
+import com.luna.timewrick.Map;
+import com.luna.timewrick.OnscreenControlRenderer;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 
-public class GameScreen extends CubocScreen {
+public class GameScreen extends TimewrickScreen {
 	Map map;
 	MapRenderer renderer;
+	public static boolean gameOver = false;
 	OnscreenControlRenderer controlRenderer;
 
 	public GameScreen (Game game) {
@@ -34,7 +35,7 @@ public class GameScreen extends CubocScreen {
 		renderer.render(delta);
 		controlRenderer.render();
 
-		if (map.bob.bounds.overlaps(map.endDoor.bounds)) {
+		if (map.max.bounds.overlaps(map.endDoor.bounds)||gameOver) {
 			game.setScreen(new GameOverScreen(game));
 		}
 
@@ -45,7 +46,7 @@ public class GameScreen extends CubocScreen {
 
 	@Override
 	public void hide () {
-		Gdx.app.debug("Cubocy", "dispose game screen");
+		Gdx.app.debug("Timewrick", "dispose game screen");
 		renderer.dispose();
 		controlRenderer.dispose();
 	}

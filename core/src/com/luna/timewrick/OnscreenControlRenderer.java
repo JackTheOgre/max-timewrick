@@ -1,5 +1,5 @@
 
-package com.badlogic.cubocy;
+package com.luna.timewrick;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
@@ -37,7 +37,6 @@ public class OnscreenControlRenderer {
 
 	public void render () {
 		if (Gdx.app.getType() != ApplicationType.Android && Gdx.app.getType() != ApplicationType.iOS) return;
-		if (map.cube.state != Cube.CONTROLLED) {
 			batch.begin();
 			batch.draw(left, 0, 0);
 			batch.draw(right, 70, 0);
@@ -45,13 +44,7 @@ public class OnscreenControlRenderer {
 			batch.draw(cubeFollow, 480 - 64, 320 - 138);
 			batch.draw(jump, 480 - 64, 0);
 			batch.end();
-		} else {
-			batch.begin();
-			batch.draw(dpad, 0, 0);
-			batch.draw(cubeFollow, 480 - 64, 320 - 138);
-			batch.draw(cubeControl, 480 - 64, 320 - 64);
-			batch.end();
-		}
+
 	}
 
 	public void dispose () {
