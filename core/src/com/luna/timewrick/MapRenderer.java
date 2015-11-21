@@ -26,6 +26,7 @@ public class MapRenderer {
 	TextureRegion grass;
 	TextureRegion wood;
 	TextureRegion door;
+	TextureRegion gold;
 	Animation maxLeft;
 	Animation maxRight;
 	Animation maxJumpLeft;
@@ -76,6 +77,7 @@ public class MapRenderer {
 							if (map.match(map.tiles[x][y], Map.DIRT)) cache.add(tile, posX, posY, 1, 1);
 							else if (map.match(map.tiles[x][y], Map.GRASS)) cache.add(grass, posX, posY, 1, 1);
 							else if (map.match(map.tiles[x][y], Map.WOOD)) cache.add(wood, posX, posY, 1, 1); //при добавлении материала не забудь здесь
+							else if (map.match(map.tiles[x][y], Map.GOLD)) cache.add(gold, posX, posY, 1, 1); //при добавлении материала не забудь здесь
 						}
 					}
 				}
@@ -87,37 +89,39 @@ public class MapRenderer {
 
 	private void createAnimations () {
 		this.tile = new TextureRegion(new Texture(Gdx.files.internal("data/tile.png")), 0, 0, 20, 20);
-		Texture maxTexture = new Texture(Gdx.files.internal("data/max.png"));
-		TextureRegion[] split = new TextureRegion(maxTexture).split(20, 20)[0];
-		TextureRegion[] mirror = new TextureRegion(maxTexture).split(20, 20)[0];
-		for (TextureRegion region : mirror)
+		Texture maxTexture = new Texture(Gdx.files.internal("data/max2.png"));
+		TextureRegion[] splitMax = new TextureRegion(maxTexture).split(20, 20)[0];
+		TextureRegion[] mirrorMax = new TextureRegion(maxTexture).split(20, 20)[0];
+		Texture mainTexture = new Texture(Gdx.files.internal("data/texture.png"));
+		TextureRegion[] splitMain = new TextureRegion(maxTexture).split(20, 20)[0];
+		for (TextureRegion region : mirrorMax)
 			region.flip(true, false);
-		spikes = split[5];
-		maxRight = new Animation(0.1f, split[0], split[1]);
-		maxLeft = new Animation(0.1f, mirror[0], mirror[1]);
-		maxJumpRight = new Animation(0.1f, split[2], split[3]);
-		maxJumpLeft = new Animation(0.1f, mirror[2], mirror[3]);
-		maxIdleRight = new Animation(0.5f, split[0], split[4]);
-		maxIdleLeft = new Animation(0.5f, mirror[0], mirror[4]);
-		maxDead = new Animation(0.2f, split[0]);
+		maxRight = new Animation(0.1f, splitMax[0], splitMax[1]);
+		maxLeft = new Animation(0.1f, mirrorMax[0], mirrorMax[1]);
+		maxJumpRight = new Animation(0.1f, splitMax[2], splitMax[3]);
+		maxJumpLeft = new Animation(0.1f, mirrorMax[2], mirrorMax[3]);
+		maxIdleRight = new Animation(0.5f, splitMax[0], splitMax[4]);
+		maxIdleLeft = new Animation(0.5f, mirrorMax[0], mirrorMax[4]);
+		maxDead = new Animation(0.2f, splitMax[0]);
 
-		split = new TextureRegion(maxTexture).split(20, 20)[1];
-		spawn = new Animation(0.1f, split[4], split[3], split[2], split[1]);
-		dying = new Animation(0.1f, split[1], split[2], split[3], split[4]);
-		dispenser = split[5];
+		splitMax = new TextureRegion(maxTexture).split(20, 20)[1];
+		spawn = new Animation(0.1f, splitMain[4], splitMain[3], splitMain[2], splitMain[1]);
+		dying = new Animation(0.1f, splitMain[1], splitMain[2], splitMain[3], splitMain[4]);
+		dispenser = splitMain[5];
 
-		split = new TextureRegion(maxTexture).split(20, 20)[2];
-		rocketExplosion = new Animation(0.1f, split[0], split[1], split[2], split[3], split[4], split[4]);
+		splitMain = new TextureRegion(mainTexture).split(20, 20)[0];
+		rocketExplosion = new Animation(0.1f, splitMain[0], splitMain[1], splitMain[2], splitMain[3], splitMain[4], splitMain[4]);
 
-		split = new TextureRegion(maxTexture).split(20, 20)[3];
-		grass = new TextureRegion(split[0]);
-		wood = new TextureRegion(split[1]);
+		splitMain = new TextureRegion(mainTexture).split(20, 20)[1];
+		grass = new TextureRegion(splitMain[0]);
+		wood = new TextureRegion(splitMain[1]);
+		gold = new TextureRegion(splitMain[2]);
 
-		split = new TextureRegion(maxTexture).split(20, 20)[4];
-		door = new TextureRegion(split[0]);
+		splitMain = new TextureRegion(mainTexture).split(20, 20)[2];
+		door = new TextureRegion(splitMain[0]);
 
-		split = new TextureRegion(maxTexture).split(20, 20)[5];
-		endDoor = split[2];
+		splitMain = new TextureRegion(mainTexture).split(20, 20)[3];
+		endDoor = splitMain[2];
 	}
 
 	float stateTime = 0;

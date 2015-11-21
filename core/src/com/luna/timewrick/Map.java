@@ -18,11 +18,12 @@ public class Map {
 	static int END = 0xff00ff;
 	static int DISPENSER = 0xff0100;
 	static int SPIKES = 0x00ff00;
-	static int DOOR = 0xffff00;
+	static int DOOR = 0x00ff00;
+	static int GOLD = 0xffff00;
 	static float HALFSCREEN = 7.5f;
 
 	float[] roomStart = new float[10], roomEnd = new float[10];
-	static int[] solid = {DIRT, GRASS, WOOD};
+	static int[] solid = {DIRT, GRASS, WOOD, GOLD};
 
 	int[][] tiles;
 	public Max max;

@@ -8,11 +8,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.luna.timewrick.OST;
 
 public class MainMenu extends TimewrickScreen {
 	TextureRegion title;
 	SpriteBatch batch;
 	float time = 0;
+	OST ost;
 
 	public MainMenu (Game game) {
 		super(game);
@@ -23,6 +25,8 @@ public class MainMenu extends TimewrickScreen {
 		title = new TextureRegion(new Texture(Gdx.files.internal("data/title.png")), 0, 0, 480, 360);
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 480, 320);
+		ost = new OST();
+		ost.playTheme();
 	}
 
 	@Override
