@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer20;
 import com.badlogic.gdx.math.Vector3;
 
 public class MapRenderer {
+	final float CAMERA_SPEED = 10f;
+
 	Map map;
 	OrthographicCamera cam;
 	SpriteCache cache;
@@ -125,10 +127,10 @@ public class MapRenderer {
 		float roomStart = map.roomStart[map.max.curRoom];
 		float roomEnd = map.roomEnd[map.max.curRoom];
 		if(map.max.vel.x>0) {
-			cam.position.lerp(lerpTarget.set(Math.min(roomEnd, Math.max(roomStart,map.max.pos.x)), map.max.pos.y, 0), 2f * deltaTime);
+			cam.position.lerp(lerpTarget.set(Math.min(roomEnd, Math.max(roomStart,map.max.pos.x)), map.max.pos.y, 0), CAMERA_SPEED * deltaTime);
 
 		} else {
-			cam.position.lerp(lerpTarget.set(Math.max(roomStart, Math.min(roomEnd,map.max.pos.x)), map.max.pos.y, 0), 2f * deltaTime);
+			cam.position.lerp(lerpTarget.set(Math.max(roomStart, Math.min(roomEnd,map.max.pos.x)), map.max.pos.y, 0), CAMERA_SPEED * deltaTime);
 		}// TODO: 20.11.15 MAKE CAMERA MOVE SHARP. мб затемнить. улучшить чтоб двери было видно всегда.
 //		cam.position.lerp(lerpTarget.set(21f, map.max.pos.y, 0), 2f * deltaTime);
 		cam.update();

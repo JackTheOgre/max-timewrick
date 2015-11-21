@@ -63,6 +63,7 @@ public class Map {
 				}
 			}
 		}
+		roomEnd[room] = pixmap.getWidth()-1-HALFSCREEN;
 
 	}
 

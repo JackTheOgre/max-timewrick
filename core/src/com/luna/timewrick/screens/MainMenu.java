@@ -34,7 +34,7 @@ public class MainMenu extends TimewrickScreen {
 
 		time += delta;
 		if (time > 1) {
-			if (Gdx.input.isKeyPressed(Keys.H) || Gdx.input.justTouched()) {
+			if (Gdx.input.isKeyPressed(Keys.ANY_KEY) || Gdx.input.justTouched()) {
 				game.setScreen(new com.luna.timewrick.screens.IntroScreen(game));
 			}
 		}

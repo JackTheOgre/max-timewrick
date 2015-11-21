@@ -35,7 +35,7 @@ public class IntroScreen extends TimewrickScreen {
 		batch.end();
 
 		time += delta;
-		if (time > 1) {
+		if (time > 0.1f) {
 			if (Gdx.input.isKeyPressed(Keys.ANY_KEY) || Gdx.input.justTouched()) {
 				game.setScreen(new com.luna.timewrick.screens.GameScreen(game));
 			}

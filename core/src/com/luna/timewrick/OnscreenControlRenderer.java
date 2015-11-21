@@ -40,8 +40,6 @@ public class OnscreenControlRenderer {
 			batch.begin();
 			batch.draw(left, 0, 0);
 			batch.draw(right, 70, 0);
-			batch.draw(cubeControl, 480 - 64, 320 - 64);
-			batch.draw(cubeFollow, 480 - 64, 320 - 138);
 			batch.draw(jump, 480 - 64, 0);
 			batch.end();
 
