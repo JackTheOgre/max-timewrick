@@ -172,14 +172,14 @@ public class Max {
             if(i%2==0) {
                 if(this.pos.x>=d.bounds.x-0.2f&&this.pos.x<=d.bounds.x+0.2f && this.vel.x>0&&doorTime>DOORTIME) {
                     curRoom++;
-                    this.bounds.x = map.doors.get(i+1).bounds.x+0.1f;//либо map.roomEnd[curRoom]+1 -Map.HALFSCREEN
+                    this.bounds.x = map.doors.get(i+1).bounds.x+0.1f;//либо map.roomEnd[curRoom]+1 -Map.HALFSCREEN_X
 //                    this.pos.x = map.roomStart[curRoom]+1;
                     doorTime = 0;
                 }
             } else {
                 if(this.pos.x>=d.bounds.x-0.2f&&this.pos.x<=d.bounds.x+0.2f && this.vel.x<0&&doorTime>DOORTIME) {
                     curRoom--;
-                    this.bounds.x = map.doors.get(i-1).bounds.x+0.1f; //либо  map.roomEnd[curRoom]-1 +Map.HALFSCREEN
+                    this.bounds.x = map.doors.get(i-1).bounds.x+0.1f; //либо  map.roomEnd[curRoom]-1 +Map.HALFSCREEN_X
 
 //                    this.pos.x = map.roomEnd[curRoom]-1;
                     doorTime = 0;

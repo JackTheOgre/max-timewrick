@@ -15,8 +15,8 @@ import com.badlogic.gdx.math.Vector3;
 
 public class MapRenderer {
 	final float CAMERA_SPEED = 10f;
-
-	Map map;
+    final float BACKGROUND_Y = 10;
+    Map map;
 	OrthographicCamera cam;
 	SpriteCache cache;
 	SpriteBatch batch = new SpriteBatch(5460);
@@ -55,7 +55,7 @@ public class MapRenderer {
 		createAnimations();
 		createBlocks();
 	}
-
+    static float minBlockY, maxBlockY;
 	private void createBlocks () {
 		int width = map.tiles.length;
 		int height = map.tiles[0].length;
@@ -77,7 +77,13 @@ public class MapRenderer {
 					}
 				}
 				blocks[blockX][blockY] = cache.endCache();
-			}
+                for (int i = 0; i < blocks.length; i++) {
+                    for (int j = 0; j < blocks[0].length; j++) {
+                        if(blocks[i][j]<minBlockY) minBlockY = blocks[i][j];
+                        if(blocks[i][j]>maxBlockY) maxBlockY = blocks[i][j];
+                    }
+                }
+            }
 		}
 		Gdx.app.debug("Timewrick", "blocks created");
 	}
@@ -130,19 +136,19 @@ public class MapRenderer {
 		float roomStart = map.roomStart[map.max.curRoom];
 		float roomEnd = map.roomEnd[map.max.curRoom];
 		if(map.max.vel.x>0) {
-			cam.position.lerp(lerpTarget.set(Math.min(roomEnd, Math.max(roomStart,map.max.pos.x)), map.max.pos.y, 0), CAMERA_SPEED * deltaTime);
+            cam.position.lerp(lerpTarget.set(Math.min(roomEnd, Math.max(roomStart,map.max.pos.x)), map.max.pos.y, 0), CAMERA_SPEED * deltaTime); // TODO: 23.11.15 пофиксить верхнюю и нижнюю границу камеру
+        } else {
+            cam.position.lerp(lerpTarget.set(Math.max(roomStart, Math.min(roomEnd, map.max.pos.x)), map.max.pos.y, 0), CAMERA_SPEED * deltaTime);
+        }
 
-		} else {
-			cam.position.lerp(lerpTarget.set(Math.max(roomStart, Math.min(roomEnd,map.max.pos.x)), map.max.pos.y, 0), CAMERA_SPEED * deltaTime);
-		}// TODO: 20.11.15 MAKE CAMERA MOVE SHARP. мб затемнить. улучшить чтоб двери было видно всегда.
 //		cam.position.lerp(lerpTarget.set(21f, map.max.pos.y, 0), 2f * deltaTime);
 		cam.update();
         cache.setProjectionMatrix(cam.combined);
         batch.setProjectionMatrix(cam.combined);
         batch.begin();
-        batch.draw(roomBackground[map.max.curRoom-1], map.roomStart[map.max.curRoom-1] - Map.HALFSCREEN-1, 0, 2+2*Map.HALFSCREEN+ (map.roomEnd[map.max.curRoom-1] - map.roomStart[map.max.curRoom-1]), 24);// TODO: 23.11.15 ONLY IF ROOM IS CHANGING
-        batch.draw(roomBackground[map.max.curRoom+1], map.roomStart[map.max.curRoom+1] - Map.HALFSCREEN-1, 0, 2+2*Map.HALFSCREEN+(map.roomEnd[map.max.curRoom+1] - map.roomStart[map.max.curRoom+1]), 24);
-        batch.draw(roomBackground[map.max.curRoom], map.roomStart[map.max.curRoom] - Map.HALFSCREEN-1, 0, 2+2*Map.HALFSCREEN+ (map.roomEnd[map.max.curRoom] - map.roomStart[map.max.curRoom]), 24);
+        batch.draw(roomBackground[map.max.curRoom-1], map.roomStart[map.max.curRoom-1] - Map.HALFSCREEN_X -1, 10, 2+2*Map.HALFSCREEN_X + (map.roomEnd[map.max.curRoom-1] - map.roomStart[map.max.curRoom-1]), 24);// TODO: 23.11.15 ONLY IF ROOM IS CHANGING
+        batch.draw(roomBackground[map.max.curRoom+1], map.roomStart[map.max.curRoom+1] - Map.HALFSCREEN_X -1, 10, 2+2*Map.HALFSCREEN_X +(map.roomEnd[map.max.curRoom+1] - map.roomStart[map.max.curRoom+1]), 24);
+        batch.draw(roomBackground[map.max.curRoom], map.roomStart[map.max.curRoom] - Map.HALFSCREEN_X -1, 10, 2+2*Map.HALFSCREEN_X + (map.roomEnd[map.max.curRoom] - map.roomStart[map.max.curRoom]), 24);
         batch.end();
 		Gdx.gl.glDisable(GL20.GL_BLEND);
 		cache.begin();

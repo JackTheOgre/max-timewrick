@@ -7,7 +7,6 @@ import com.luna.timewrick.screens.EndDoor;
 import com.luna.timewrick.screens.GameScreen;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Map {
 	static int AMOUNT_OF_ROOMS = 10;
@@ -21,7 +20,8 @@ public class Map {
 	static int SPIKES = 0x00ff00;
 	static int DOOR = 0x00ff00;
 	static int GOLD = 0xffff00;
-	static float HALFSCREEN = 7.5f;
+	static float HALFSCREEN_X = 7.5f; //actually 8(cz full is 16)
+	static float HALFSCREEN_Y = 12f;
 
 	float[] roomStart = new float[AMOUNT_OF_ROOMS], roomEnd = new float[AMOUNT_OF_ROOMS];
 	static int[] solid = {DIRT, GRASS, WOOD, GOLD};
@@ -40,7 +40,7 @@ public class Map {
 		Pixmap pixmap = new Pixmap(Gdx.files.internal("data/levels.png"));
 		tiles = new int[pixmap.getWidth()][pixmap.getHeight()];
 		int room = 1, k = -1;
-		roomStart[1] = HALFSCREEN+1;
+		roomStart[1] = HALFSCREEN_X +1;
 		for (int y = 0; y < pixmap.getHeight(); y++) {
 			for (int x = 0; x < pixmap.getWidth(); x++) {
 				int pix = (pixmap.getPixel(x, y) >>> 8) & 0xffffff;
@@ -52,10 +52,10 @@ public class Map {
 				}else if (match(pix, DOOR)) {
 					doors.add(new Door(x, pixmap.getHeight() - 1 - y));
 					if(k==1) {
-						roomStart[room] = x+HALFSCREEN+1;
+						roomStart[room] = x+ HALFSCREEN_X +1;
 					}
 					else {
-						roomEnd[room++] = x-HALFSCREEN;
+						roomEnd[room++] = x- HALFSCREEN_X;
 					}
 					k*=-1;
 					System.out.println("Door: "+x);
@@ -65,7 +65,7 @@ public class Map {
 				}
 			}
 		}
-		roomEnd[room] = pixmap.getWidth()-1-HALFSCREEN;
+		roomEnd[room] = pixmap.getWidth()-1- HALFSCREEN_X;
 
 	}
 
