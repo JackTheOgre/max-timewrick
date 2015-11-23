@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Map {
+	static int AMOUNT_OF_ROOMS = 10;
 	static int EMPTY = 0;
 	static int DIRT = 0xffffff;
 	static int GRASS = 0x0000ff;
@@ -22,7 +23,7 @@ public class Map {
 	static int GOLD = 0xffff00;
 	static float HALFSCREEN = 7.5f;
 
-	float[] roomStart = new float[10], roomEnd = new float[10];
+	float[] roomStart = new float[AMOUNT_OF_ROOMS], roomEnd = new float[AMOUNT_OF_ROOMS];
 	static int[] solid = {DIRT, GRASS, WOOD, GOLD};
 
 	int[][] tiles;

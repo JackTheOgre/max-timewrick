@@ -162,7 +162,7 @@ public class Max {
         int tile2 = tiles[p2x][map.tiles[0].length - 1 - p2y];
         int tile3 = tiles[p3x][map.tiles[0].length - 1 - p3y];
         int tile4 = tiles[p4x][map.tiles[0].length - 1 - p4y];
-
+        // TODO: 23.11.15 сделать проверку на комнату по координатам
         if (state != DYING && (map.isDeadly(tile1) || map.isDeadly(tile2) || map.isDeadly(tile3) || map.isDeadly(tile4))) {
             state = DYING;
             stateTime = 0;

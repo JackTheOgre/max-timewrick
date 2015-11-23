@@ -26,7 +26,7 @@ public class MainMenu extends TimewrickScreen {
 		batch = new SpriteBatch();
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, 480, 320);
 		ost = new OST();
-		ost.playTheme();
+		if(!ost.music.isPlaying()) ost.playTheme();
 	}
 
 	@Override

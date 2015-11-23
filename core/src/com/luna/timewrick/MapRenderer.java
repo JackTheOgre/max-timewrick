@@ -35,18 +35,13 @@ public class MapRenderer {
 	Animation maxIdleRight;
 	Animation maxDead;
 	Animation zap;
-	Animation cubeFixed;
-	TextureRegion cubeControlled;
 	TextureRegion dispenser;
 	Animation spawn;
 	Animation dying;
-	TextureRegion spikes;
-	Animation rocket;
 	Animation rocketExplosion;
-	TextureRegion rocketPad;
 	TextureRegion endDoor;
-	TextureRegion movingSpikes;
-	TextureRegion laser;
+
+    TextureRegion[] roomBackground = new TextureRegion[Map.AMOUNT_OF_ROOMS];
 	FPSLogger fps = new FPSLogger();
 
 	public MapRenderer (Map map) {
@@ -77,7 +72,7 @@ public class MapRenderer {
 							if (map.match(map.tiles[x][y], Map.DIRT)) cache.add(tile, posX, posY, 1, 1);
 							else if (map.match(map.tiles[x][y], Map.GRASS)) cache.add(grass, posX, posY, 1, 1);
 							else if (map.match(map.tiles[x][y], Map.WOOD)) cache.add(wood, posX, posY, 1, 1); //при добавлении материала не забудь здесь
-							else if (map.match(map.tiles[x][y], Map.GOLD)) cache.add(gold, posX, posY, 1, 1); //при добавлении материала не забудь здесь
+							else if (map.match(map.tiles[x][y], Map.GOLD)) cache.add(gold, posX, posY, 1, 1);
 						}
 					}
 				}
@@ -88,6 +83,10 @@ public class MapRenderer {
 	}
 
 	private void createAnimations () {
+        for (int i = 0; i < Map.AMOUNT_OF_ROOMS; i++) {
+            roomBackground[i] = new TextureRegion(new Texture(Gdx.files.internal("data/rooms/"+i+".png"))); // TODO: 23.11.15 mb width=roomEnd[i]-room[start]-1
+        }
+
 		this.tile = new TextureRegion(new Texture(Gdx.files.internal("data/tile.png")), 0, 0, 20, 20);
 		Texture maxTexture = new Texture(Gdx.files.internal("data/max2.png"));
 		TextureRegion[] splitMax = new TextureRegion(maxTexture).split(20, 20)[0];
@@ -138,9 +137,13 @@ public class MapRenderer {
 		}// TODO: 20.11.15 MAKE CAMERA MOVE SHARP. мб затемнить. улучшить чтоб двери было видно всегда.
 //		cam.position.lerp(lerpTarget.set(21f, map.max.pos.y, 0), 2f * deltaTime);
 		cam.update();
-
-
-		cache.setProjectionMatrix(cam.combined);
+        cache.setProjectionMatrix(cam.combined);
+        batch.setProjectionMatrix(cam.combined);
+        batch.begin();
+        batch.draw(roomBackground[map.max.curRoom-1], map.roomStart[map.max.curRoom-1] - Map.HALFSCREEN-1, 0, 2+2*Map.HALFSCREEN+ (map.roomEnd[map.max.curRoom-1] - map.roomStart[map.max.curRoom-1]), 24);// TODO: 23.11.15 ONLY IF ROOM IS CHANGING
+        batch.draw(roomBackground[map.max.curRoom+1], map.roomStart[map.max.curRoom+1] - Map.HALFSCREEN-1, 0, 2+2*Map.HALFSCREEN+(map.roomEnd[map.max.curRoom+1] - map.roomStart[map.max.curRoom+1]), 24);
+        batch.draw(roomBackground[map.max.curRoom], map.roomStart[map.max.curRoom] - Map.HALFSCREEN-1, 0, 2+2*Map.HALFSCREEN+ (map.roomEnd[map.max.curRoom] - map.roomStart[map.max.curRoom]), 24);
+        batch.end();
 		Gdx.gl.glDisable(GL20.GL_BLEND);
 		cache.begin();
 		int b = 0;
@@ -152,9 +155,8 @@ public class MapRenderer {
 		}
 		cache.end();
 		stateTime += deltaTime;
-		batch.setProjectionMatrix(cam.combined);
-		batch.begin();
-		for(int i = 0; i< map.doors.size(); i++) {
+        batch.begin();
+        for(int i = 0; i< map.doors.size(); i++) {
 			Door d = map.doors.get(i);
 			if(i%2==0) {
 				batch.draw(door, d.bounds.x, d.bounds.y, 1, 1);
